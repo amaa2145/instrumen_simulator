@@ -27,11 +27,11 @@ simulasi = st.selectbox("🔍 Pilih Simulasi:", [
 ])
 
 if simulasi == "UV-Vis":
-    # tampilkan kode untuk simulasi UV-Vis
+    st.subheader("🔬 Simulasi UV-Vis akan ditampilkan di sini...")
 elif simulasi == "GC":
-    # tampilkan kode untuk GC
+    st.subheader("🔬 Simulasi GC")
 elif simulasi == "FTIR":
-    # tampilkan kode untuk FTIR
+    st.subheader("🔬 Simulasi FTIR")
 
 # ------------------ Halaman 1 -------------------
 if menu == "1. Simulasi Spektrofotometer UV-Vis":
