@@ -8,7 +8,7 @@ st.set_page_config(page_title="Simulasi Spektrofotometer UV-Vis", layout="center
 
 # ------------------ HEADER -------------------
 st.title("🧪 Simulasi Spektrofotometer UV-Vis")
-st.image("assets/spektro_uvvis.png", caption="Ilustrasi Instrumen UV-Vis", use_column_width=True)
+st.image("assets/spektrofotometru UV-Vis Double Beam.webp", caption="Ilustrasi Instrumen UV-Vis", use_column_width=True)
 st.markdown("""
 Aplikasi ini mensimulasikan prinsip kerja spektrofotometer UV-Vis, seperti:
 - Menentukan λ maks dari data spektrum
