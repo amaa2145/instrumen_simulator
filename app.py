@@ -17,97 +17,89 @@ menu = st.sidebar.radio("📋 Pilih Simulasi", [
 ])
 
 # ------------------ Halaman 1 -------------------
-if menu == "1. Input Spektrum λ maks":
+if menu == "1. Simulasi Spektrofotometer UV-Vis":
+    st.subheader("🧪 Simulasi Lengkap Spektrofotometer UV-Vis")
 
-    st.subheader("1. Input Spektrum UV-Vis (λ vs Absorbansi)")
+    with st.expander("🔹 1. Input Spektrum (λ vs Absorbansi)"):
+        contoh_data = "200,0.01\n250,0.18\n300,0.45\n350,0.60\n400,0.40\n450,0.25"
+        input_uvvis = st.text_area("Masukkan data (λ [nm], Absorbansi)", contoh_data, height=180)
 
-    contoh_data = "200,0.01\n250,0.18\n300,0.45\n350,0.60\n400,0.40\n450,0.25"
-    input_uvvis = st.text_area("Masukkan data (λ [nm], Absorbansi)", contoh_data, height=200)
+        if input_uvvis:
+            try:
+                df_uv = pd.read_csv(io.StringIO(input_uvvis), header=None, names=["Panjang Gelombang (nm)", "Absorbansi"])
+                idx_max = df_uv["Absorbansi"].idxmax()
+                lambda_max = df_uv.loc[idx_max, "Panjang Gelombang (nm)"]
 
-    if input_uvvis:
-        try:
-            import io
-            df_uv = pd.read_csv(io.StringIO(input_uvvis), header=None, names=["Panjang Gelombang (nm)", "Absorbansi"])
-            idx_max = df_uv["Absorbansi"].idxmax()
-            lambda_max = df_uv.loc[idx_max, "Panjang Gelombang (nm)"]
+                st.success(f"λ maks terdeteksi pada: **{lambda_max} nm**")
 
-            st.success(f"λ maks terdeteksi pada: **{lambda_max} nm**")
+                fig, ax = plt.subplots()
+                ax.plot(df_uv["Panjang Gelombang (nm)"], df_uv["Absorbansi"], color='blue')
+                ax.axvline(lambda_max, color='red', linestyle='--', label=f'λ maks = {lambda_max} nm')
+                ax.set_xlabel("Panjang Gelombang (nm)")
+                ax.set_ylabel("Absorbansi")
+                ax.set_title("Spektrum UV-Vis")
+                ax.legend()
+                st.pyplot(fig)
+            except Exception as e:
+                st.error(f"Gagal membaca data: {e}")
 
-            fig, ax = plt.subplots()
-            ax.plot(df_uv["Panjang Gelombang (nm)"], df_uv["Absorbansi"], color='blue')
-            ax.axvline(lambda_max, color='red', linestyle='--', label=f'λ maks = {lambda_max} nm')
-            ax.set_xlabel("Panjang Gelombang (nm)")
-            ax.set_ylabel("Absorbansi")
-            ax.set_title("Spektrum UV-Vis")
-            ax.legend()
-            st.pyplot(fig)
-        except Exception as e:
-            st.error(f"Gagal membaca data: {e}")
+    with st.expander("🔹 2. Input Kurva Kalibrasi"):
+        contoh_kalibrasi = "0,0.01\n5,0.10\n10,0.22\n15,0.34\n20,0.45"
+        input_kalibrasi = st.text_area("Masukkan data kalibrasi (Konsentrasi [ppm], Absorbansi)", contoh_kalibrasi, height=180)
 
-# ------------------ Halaman 2 -------------------
-elif menu == "2. Input Kurva Kalibrasi":
-    st.subheader("2. Input Kurva Kalibrasi UV-Vis")
+        if input_kalibrasi:
+            try:
+                df_kal = pd.read_csv(io.StringIO(input_kalibrasi), header=None, names=["Konsentrasi (ppm)", "Absorbansi"])
+                X = np.array(df_kal["Konsentrasi (ppm)"]).reshape(-1, 1)
+                y = np.array(df_kal["Absorbansi"])
 
-    contoh_kalibrasi = "0,0.01\n5,0.10\n10,0.22\n15,0.34\n20,0.45"
-    input_kalibrasi = st.text_area("Masukkan data (Konsentrasi [ppm], Absorbansi)", contoh_kalibrasi, height=200)
+                model = LinearRegression()
+                model.fit(X, y)
 
-    if input_kalibrasi:
-        try:
-            df_kal = pd.read_csv(io.StringIO(input_kalibrasi), header=None, names=["Konsentrasi (ppm)", "Absorbansi"])
+                slope = model.coef_[0]
+                intercept = model.intercept_
+                r2 = model.score(X, y)
 
-            X = np.array(df_kal["Konsentrasi (ppm)"]).reshape(-1, 1)
-            y = np.array(df_kal["Absorbansi"])
+                st.session_state["uvvis_slope"] = slope
+                st.session_state["uvvis_intercept"] = intercept
 
-            model = LinearRegression()
-            model.fit(X, y)
+                st.markdown(f"""
+                **Persamaan Regresi:**  
+                Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}  
+                R² = {r2:.4f}
+                """)
 
-            slope = model.coef_[0]
-            intercept = model.intercept_
-            r2 = model.score(X, y)
+                fig, ax = plt.subplots()
+                ax.scatter(X, y, color='black', label='Data Kalibrasi')
+                ax.plot(X, model.predict(X), color='green', label='Garis Regresi')
+                ax.set_xlabel("Konsentrasi (ppm)")
+                ax.set_ylabel("Absorbansi")
+                ax.set_title("Kurva Kalibrasi UV-Vis")
+                ax.legend()
+                st.pyplot(fig)
 
-            st.markdown(f"""
-            **Persamaan Regresi:**  
-            Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}  
-            R² = {r2:.4f}
-            """)
+            except Exception as e:
+                st.error(f"Gagal membaca data kalibrasi: {e}")
 
-            fig, ax = plt.subplots()
-            ax.scatter(X, y, color='black', label='Data Kalibrasi')
-            ax.plot(X, model.predict(X), color='green', label='Garis Regresi')
-            ax.set_xlabel("Konsentrasi (ppm)")
-            ax.set_ylabel("Absorbansi")
-            ax.set_title("Kurva Kalibrasi UV-Vis")
-            ax.legend()
-            st.pyplot(fig)
+    with st.expander("🔹 3. Hitung Konsentrasi dari Absorbansi Sampel"):
+        absorbansi = st.number_input("Masukkan nilai absorbansi sampel:", min_value=0.0, step=0.01)
 
-            # simpan hasil regresi ke session
-            st.session_state["uvvis_slope"] = slope
-            st.session_state["uvvis_intercept"] = intercept
-        except Exception as e:
-            st.error(f"Gagal membaca data: {e}")
+        slope = st.session_state.get("uvvis_slope", None)
+        intercept = st.session_state.get("uvvis_intercept", None)
 
-# ------------------ Halaman 3 -------------------
-elif menu == "3. Hitung Konsentrasi Sampel":
-    st.subheader("3. Hitung Konsentrasi dari Absorbansi Sampel")
-
-    absorbansi = st.number_input("Masukkan nilai absorbansi sampel:", min_value=0.0, step=0.01)
-
-    # Ambil nilai regresi dari session
-    slope = st.session_state.get("uvvis_slope", None)
-    intercept = st.session_state.get("uvvis_intercept", None)
-
-    if slope is not None and intercept is not None:
-        st.info(f"Menggunakan persamaan: C = (Absorbansi - {intercept:.4f}) / {slope:.4f}")
-    else:
-        slope = st.number_input("Masukkan slope:", value=0.02, step=0.001)
-        intercept = st.number_input("Masukkan intercept:", value=0.01, step=0.001)
-
-    if st.button("Hitung Konsentrasi"):
-        if slope != 0:
-            konsentrasi = (absorbansi - intercept) / slope
-            st.success(f"Konsentrasi sampel: **{konsentrasi:.2f} ppm**")
+        if slope is not None and intercept is not None:
+            st.info(f"Menggunakan persamaan: C = (Absorbansi - {intercept:.4f}) / {slope:.4f}")
         else:
-            st.error("Slope tidak boleh nol.")
+            slope = st.number_input("Masukkan slope:", value=0.02, step=0.001)
+            intercept = st.number_input("Masukkan intercept:", value=0.01, step=0.001)
+
+        if st.button("Hitung Konsentrasi Sampel"):
+            if slope != 0:
+                konsentrasi = (absorbansi - intercept) / slope
+                st.success(f"Konsentrasi sampel: **{konsentrasi:.2f} ppm**")
+            else:
+                st.error("Slope tidak boleh nol.")
+
 
     # Halaman ini dapat dikembangkan lebih lanjut
 
