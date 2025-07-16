@@ -6,7 +6,6 @@ from sklearn.linear_model import LinearRegression
 import io
 
 st.set_page_config(page_title="Simulasi Instrumen Kimia", layout="centered")
-
 st.title("🧪 Aplikasi Simulasi Instrumen Kimia")
 
 # ------------------ TAMPILAN BERANDA SAJA -------------------
@@ -26,15 +25,8 @@ simulasi = st.selectbox("🔍 Pilih Simulasi:", [
     "UV-Vis", "GC", "FTIR"
 ])
 
+# ------------------ Halaman 1: UV-Vis -------------------
 if simulasi == "UV-Vis":
-    st.subheader("🔬 Simulasi UV-Vis akan ditampilkan di sini...")
-elif simulasi == "GC":
-    st.subheader("🔬 Simulasi GC")
-elif simulasi == "FTIR":
-    st.subheader("🔬 Simulasi FTIR")
-
-# ------------------ Halaman 1 -------------------
-if menu == "1. Simulasi Spektrofotometer UV-Vis":
     st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
     st.markdown("Masukkan data panjang gelombang dan absorbansi:")
 
@@ -65,7 +57,6 @@ if menu == "1. Simulasi Spektrofotometer UV-Vis":
         st.success(f"λ maks terdeteksi pada: **{lambda_max} nm**")
 
         warna_garis = st.color_picker("Pilih warna garis spektrum", "#000000")
-
         overlay = st.checkbox("Tampilkan spektrum referensi? (simulasi)")
 
         fig, ax = plt.subplots()
@@ -83,8 +74,8 @@ if menu == "1. Simulasi Spektrofotometer UV-Vis":
         ax.legend()
         st.pyplot(fig)
 
-# ------------------ Halaman 2 -------------------
-elif menu == "2. Simulasi Instrumen GC":
+# ------------------ Halaman 2: GC -------------------
+elif simulasi == "GC":
     st.subheader("🧪 2. Simulasi Kromatografi Gas (GC)")
     st.markdown("### 🔧 Parameter Instrumen GC")
 
@@ -131,8 +122,8 @@ elif menu == "2. Simulasi Instrumen GC":
     ax.legend()
     st.pyplot(fig)
 
-# ------------------ Halaman 3 -------------------
-elif menu == "3. Simulasi Spektroskopi FTIR":
+# ------------------ Halaman 3: FTIR -------------------
+elif simulasi == "FTIR":
     st.subheader("📉 3. Simulasi Spektrum FTIR")
     st.markdown("Masukkan data FTIR kamu (format: bilangan gelombang [cm⁻¹] dan intensitas):")
 
