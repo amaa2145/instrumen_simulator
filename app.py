@@ -68,9 +68,19 @@ if menu == "1. Simulasi Spektrofotometer UV-Vis":
         lambda_max = df_uv.loc[idx_max, "Panjang Gelombang (nm)"]
         st.success(f"λ maks terdeteksi pada: **{lambda_max} nm**")
 
+        warna_garis = st.color_picker("Pilih warna garis spektrum", "#000000")
+
+        overlay = st.checkbox("Tampilkan spektrum referensi? (simulasi)")
+
         fig, ax = plt.subplots()
-        ax.plot(df_uv["Panjang Gelombang (nm)"], df_uv["Absorbansi"], color='blue')
+        ax.plot(df_uv["Panjang Gelombang (nm)"], df_uv["Absorbansi"], color=warna_garis, label='Spektrum Sampel')
         ax.axvline(lambda_max, color='red', linestyle='--', label=f'λ maks = {lambda_max} nm')
+
+        if overlay:
+            ref_lambda = df_uv["Panjang Gelombang (nm)"]
+            ref_abs = np.interp(ref_lambda, ref_lambda, df_uv["Absorbansi"]) * 0.8
+            ax.plot(ref_lambda, ref_abs, color='gray', linestyle=':', label='Referensi')
+
         ax.set_xlabel("Panjang Gelombang (nm)")
         ax.set_ylabel("Absorbansi")
         ax.set_title("Spektrum UV-Vis")
@@ -139,8 +149,10 @@ elif menu == "3. Simulasi Spektroskopi FTIR":
             df_ftir.sort_values(by="Wavenumber (cm⁻¹)", ascending=False, inplace=True)
 
             st.markdown("### Spektrum FTIR")
+            warna_ftir = st.color_picker("Pilih warna garis spektrum FTIR", "#000000")
+
             fig, ax = plt.subplots()
-            ax.plot(df_ftir["Wavenumber (cm⁻¹)"], df_ftir["Absorbansi"], color='black')
+            ax.plot(df_ftir["Wavenumber (cm⁻¹)"], df_ftir["Absorbansi"], color=warna_ftir)
             ax.set_xlabel("Bilangan Gelombang (cm⁻¹)")
             ax.set_ylabel("Absorbansi")
             ax.set_title("Spektrum FTIR")
@@ -170,4 +182,3 @@ elif menu == "3. Simulasi Spektroskopi FTIR":
 
         except Exception as e:
             st.error(f"Gagal membaca data: {e}")
-        
