@@ -17,9 +17,6 @@ menu = st.sidebar.radio("📋 Navigasi", [
 ])
 
 if menu == "🏠 Beranda":
-    st.image("assets/spektro.jpg","ftir.jpg","GC.png", caption="Ilustrasi Instrumen Laboratorium")
-
-
     st.markdown("""
     # 🧪 Selamat Datang di Aplikasi Simulasi Instrumen Kimia
 
