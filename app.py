@@ -7,7 +7,6 @@ import io
 
 st.set_page_config(page_title="Simulasi Instrumen Kimia", layout="centered")
 
-st.title("🧪 Aplikasi Simulasi Instrumen Kimia")
 
 menu = st.sidebar.radio("📋 Navigasi", [
     "🏠 Beranda",
