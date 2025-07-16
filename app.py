@@ -61,5 +61,20 @@ elif menu == "2. Kurva Kalibrasi":
     model.fit(X, y)
 
     slope = model.coef_[0]
-    
-st.image("assets/spektro_uvvis.png", caption="Ilustrasi Instrumen UV-Vis", use_column_width=True)
+    intercept = model.intercept_
+    r2 = model.score(X, y)
+
+    st.markdown(f"""
+    **Persamaan regresi:**  
+    Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}  
+    Koefisien determinasi (R²) = {r2:.4f}
+    """)
+
+    fig, ax = plt.subplots()
+    ax.scatter(X, y, color='blue', label='Data Standar')
+    ax.plot(X, model.predict(X), color='green', label='Regresi Linear')
+    ax.set_xlabel("Konsentrasi (ppm)")
+    ax.set_ylabel("Absorbansi")
+    ax.legend()
+    st.pyplot(fig)
+
