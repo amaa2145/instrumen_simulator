@@ -7,30 +7,35 @@ import io
 
 st.set_page_config(page_title="Simulasi Instrumen Kimia", layout="centered")
 
+st.title("🧪 Aplikasi Simulasi Instrumen Kimia")
 
-menu = st.sidebar.radio("📋 Navigasi", [
-    "🏠 Beranda",
-    "1. Simulasi Spektrofotometer UV-Vis",
-    "2. Simulasi Instrumen GC",
-    "3. Simulasi Spektroskopi FTIR"
+# ------------------ TAMPILAN BERANDA SAJA -------------------
+st.image("/mnt/data/2cb33edf-f03f-4bdf-be17-533076d0521a.png", use_container_width=True, caption="Ilustrasi Instrumen Kimia")
+
+st.markdown("""
+# 👋 Selamat Datang!
+
+Aplikasi ini dirancang untuk mensimulasikan penggunaan berbagai **instrumen kimia** secara interaktif. Kamu bisa mencoba:
+- 📊 **Spektrofotometer UV-Vis**
+- 🧬 **Gas Chromatography (GC)**
+- 🌈 **Spektroskopi FTIR**
+
+Pilih salah satu simulasi di bawah ini untuk memulai:
+""")
+
+simulasi = st.selectbox("🔍 Pilih Simulasi yang Ingin Dicoba:", [
+    "-- Pilih Simulasi --",
+    "Spektrofotometer UV-Vis",
+    "Instrumen GC",
+    "Spektroskopi FTIR"
 ])
 
-if menu == "🏠 Beranda":
-    st.markdown("""
-    # 🧪 Selamat Datang di Aplikasi Simulasi Instrumen Kimia
-
-    Aplikasi ini dirancang untuk membantu mahasiswa memahami cara kerja instrumen laboratorium kimia secara interaktif, meliputi:
-
-    - 📊 **Spektrofotometer UV-Vis**  
-    - 🧬 **Gas Chromatography (GC)**  
-    - 🌈 **Spektroskopi FTIR**
-
-    Kamu dapat memasukkan data sendiri atau menggunakan data contoh untuk melihat:
-    - Spektrum
-    - Kurva kalibrasi
-    - Perhitungan konsentrasi
-
-    """, unsafe_allow_html=True)
+if simulasi == "Spektrofotometer UV-Vis":
+    st.switch_page("pages/1_spektrofotometer_uvvis.py")
+elif simulasi == "Instrumen GC":
+    st.switch_page("pages/2_simulasi_gc.py")
+elif simulasi == "Spektroskopi FTIR":
+    st.switch_page("pages/3_simulasi_ftir.py")
 
     st.info("🔍 Pilih menu di sidebar untuk memulai simulasi!")
 
