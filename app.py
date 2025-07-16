@@ -61,3 +61,5 @@ elif menu == "2. Kurva Kalibrasi":
     model.fit(X, y)
 
     slope = model.coef_[0]
+    
+st.image("assets/spektro_uvvis.png", caption="Ilustrasi Instrumen UV-Vis", use_column_width=True)
