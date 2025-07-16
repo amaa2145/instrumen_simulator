@@ -21,19 +21,18 @@ Aplikasi ini dirancang untuk mensimulasikan penggunaan berbagai **instrumen kimi
 Pilih salah satu simulasi di bawah ini untuk memulai:
 """)
 
-simulasi = st.selectbox("🔍 Pilih Simulasi yang Ingin Dicoba:", [
+simulasi = st.selectbox("🔍 Pilih Simulasi:", [
     "-- Pilih Simulasi --",
-    "Spektrofotometer UV-Vis",
-    "Instrumen GC",
-    "Spektroskopi FTIR"
+    "UV-Vis", "GC", "FTIR"
 ])
 
-if simulasi == "Spektrofotometer UV-Vis":
-    st.switch_page("pages/1_spektrofotometer_uvvis.py")
-elif simulasi == "Instrumen GC":
-    st.switch_page("pages/2_simulasi_gc.py")
-elif simulasi == "Spektroskopi FTIR":
-    st.switch_page("pages/3_simulasi_ftir.py")
+if simulasi == "UV-Vis":
+    # tampilkan kode untuk simulasi UV-Vis
+elif simulasi == "GC":
+    # tampilkan kode untuk GC
+elif simulasi == "FTIR":
+    # tampilkan kode untuk FTIR
+
 
 
 # ------------------ Halaman 1 -------------------
