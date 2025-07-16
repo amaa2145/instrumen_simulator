@@ -146,30 +146,30 @@ example_gc_data = {
 df_gc = pd.DataFrame(example_gc_data)
 edited_gc = st.data_editor(df_gc, use_container_width=True, num_rows="dynamic")
 
-    # Hitung luas tiap puncak (asumsi: segitiga → luas = 0.5 × tinggi × lebar)
-    edited_gc["Luas Puncak"] = 0.5 * edited_gc["Tinggi Puncak"] * edited_gc["Lebar Puncak (menit)"]
-    total_area = edited_gc["Luas Puncak"].sum()
-    edited_gc["% Area"] = (edited_gc["Luas Puncak"] / total_area) * 100
+# Hitung luas tiap puncak (asumsi: segitiga → luas = 0.5 × tinggi × lebar)
+edited_gc["Luas Puncak"] = 0.5 * edited_gc["Tinggi Puncak"] * edited_gc["Lebar Puncak (menit)"]
+total_area = edited_gc["Luas Puncak"].sum()
+edited_gc["% Area"] = (edited_gc["Luas Puncak"] / total_area) * 100
 
-    st.markdown("### Tabel Data dan Perhitungan")
-    st.dataframe(edited_gc)
+st.markdown("### Tabel Data dan Perhitungan")
+st.dataframe(edited_gc)
 
-    # Plot kromatogram
-    st.markdown("### Kromatogram (Simulasi)")
+# Plot kromatogram
+st.markdown("### Kromatogram (Simulasi)")
 
-    fig, ax = plt.subplots()
-    for index, row in edited_gc.iterrows():
-        rt = row["Waktu Retensi (menit)"]
-        height = row["Tinggi Puncak"]
-        width = row["Lebar Puncak (menit)"]
+fig, ax = plt.subplots()
+for index, row in edited_gc.iterrows():
+    rt = row["Waktu Retensi (menit)"]
+    height = row["Tinggi Puncak"]
+    width = row["Lebar Puncak (menit)"]
 
-        # Buat segitiga untuk puncak GC
-        x_vals = [rt - width/2, rt, rt + width/2]
-        y_vals = [0, height, 0]
-        ax.plot(x_vals, y_vals, label=f"Puncak {index+1}")
+    # Buat segitiga untuk puncak GC
+    x_vals = [rt - width / 2, rt, rt + width / 2]
+    y_vals = [0, height, 0]
+    ax.plot(x_vals, y_vals, label=f"Puncak {index + 1}")
 
-    ax.set_xlabel("Waktu Retensi (menit)")
-    ax.set_ylabel("Tinggi Puncak")
-    ax.set_title("Kromatogram Gas Chromatography (GC)")
-    ax.legend()
-    st.pyplot(fig)
+ax.set_xlabel("Waktu Retensi (menit)")
+ax.set_ylabel("Tinggi Puncak")
+ax.set_title("Kromatogram Gas Chromatography (GC)")
+ax.legend()
+st.pyplot(fig)
