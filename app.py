@@ -19,6 +19,12 @@ Kamu dapat:
 
 # ------------------ MENU -------------------
 menu = st.sidebar.radio("📋 Pilih Simulasi", ["1. Input Spektrum λ maks", "2. Input Kurva Kalibrasi", "3. Hitung Konsentrasi Sampel"])
+menu = st.sidebar.radio("📋 Pilih Simulasi", [
+    "1. Input Spektrum λ maks", 
+    "2. Input Kurva Kalibrasi", 
+    "3. Hitung Konsentrasi Sampel",
+    "4. Simulasi Instrumen GC"  # ← Tambahan ini
+])
 
 # ------------------ 1. SPEKTRUM λ MAKS -------------------
 if menu == "1. Input Spektrum λ maks":
@@ -113,3 +119,57 @@ elif menu == "3. Hitung Konsentrasi Sampel":
             st.success(f"Perkiraan konsentrasi: **{konsentrasi:.2f} ppm**")
         else:
             st.error("Slope tidak boleh nol.")
+#--------------------4. simulasi instrumen GC ----------------------
+elif menu == "4. Simulasi Instrumen GC":
+    st.subheader("4. Simulasi Kromatografi Gas (GC)")
+st.markdown("### 🔧 Parameter Instrumen GC")
+
+col1, col2 = st.columns(2)
+with col1:
+    suhu_kolom = st.slider("Suhu Kolom (°C)", min_value=30, max_value=300, value=150, step=5)
+    jenis_kolom = st.selectbox("Jenis Kolom", ["Kapiler", "Packed"])
+
+with col2:
+    laju_alir = st.slider("Laju Aliran Gas Pembawa (mL/min)", min_value=1.0, max_value=5.0, value=2.0, step=0.1)
+    injeksi = st.radio("Metode Injeksi", ["Manual", "Otomatis"])
+
+st.info(f"🧪 Suhu Kolom: {suhu_kolom}°C | Kolom: {jenis_kolom} | Alir: {laju_alir} mL/min | Injeksi: {injeksi}")
+
+    st.markdown("Masukkan data waktu retensi dan tinggi puncak untuk setiap senyawa:")
+
+    example_gc_data = {
+        "Waktu Retensi (menit)": [1.2, 2.5, 3.7, 5.0],
+        "Tinggi Puncak": [10, 25, 18, 12],
+        "Lebar Puncak (menit)": [0.2, 0.3, 0.25, 0.2]
+    }
+
+    df_gc = pd.DataFrame(example_gc_data)
+    edited_gc = st.data_editor(df_gc, use_container_width=True, num_rows="dynamic")
+
+    # Hitung luas tiap puncak (asumsi: segitiga → luas = 0.5 × tinggi × lebar)
+    edited_gc["Luas Puncak"] = 0.5 * edited_gc["Tinggi Puncak"] * edited_gc["Lebar Puncak (menit)"]
+    total_area = edited_gc["Luas Puncak"].sum()
+    edited_gc["% Area"] = (edited_gc["Luas Puncak"] / total_area) * 100
+
+    st.markdown("### Tabel Data dan Perhitungan")
+    st.dataframe(edited_gc)
+
+    # Plot kromatogram
+    st.markdown("### Kromatogram (Simulasi)")
+
+    fig, ax = plt.subplots()
+    for index, row in edited_gc.iterrows():
+        rt = row["Waktu Retensi (menit)"]
+        height = row["Tinggi Puncak"]
+        width = row["Lebar Puncak (menit)"]
+
+        # Buat segitiga untuk puncak GC
+        x_vals = [rt - width/2, rt, rt + width/2]
+        y_vals = [0, height, 0]
+        ax.plot(x_vals, y_vals, label=f"Puncak {index+1}")
+
+    ax.set_xlabel("Waktu Retensi (menit)")
+    ax.set_ylabel("Tinggi Puncak")
+    ax.set_title("Kromatogram Gas Chromatography (GC)")
+    ax.legend()
+    st.pyplot(fig)
