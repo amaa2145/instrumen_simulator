@@ -135,7 +135,7 @@ with col2:
 
 st.info(f"🧪 Suhu Kolom: {suhu_kolom}°C | Kolom: {jenis_kolom} | Alir: {laju_alir} mL/min | Injeksi: {injeksi}")
 
-    st.markdown("Masukkan data waktu retensi dan tinggi puncak untuk setiap senyawa:")
+st.markdown("Masukkan data waktu retensi dan tinggi puncak untuk setiap senyawa:")
 
     example_gc_data = {
         "Waktu Retensi (menit)": [1.2, 2.5, 3.7, 5.0],
