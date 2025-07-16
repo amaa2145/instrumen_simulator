@@ -10,8 +10,6 @@ st.set_page_config(page_title="Simulasi Instrumen Kimia", layout="centered")
 st.title("🧪 Aplikasi Simulasi Instrumen Kimia")
 
 # ------------------ TAMPILAN BERANDA SAJA -------------------
-st.image("/mnt/data/2cb33edf-f03f-4bdf-be17-533076d0521a.png", use_container_width=True, caption="Ilustrasi Instrumen Kimia")
-
 st.markdown("""
 # 👋 Selamat Datang!
 
@@ -37,7 +35,6 @@ elif simulasi == "Instrumen GC":
 elif simulasi == "Spektroskopi FTIR":
     st.switch_page("pages/3_simulasi_ftir.py")
 
-    st.info("🔍 Pilih menu di sidebar untuk memulai simulasi!")
 
 # ------------------ Halaman 1 -------------------
 if menu == "1. Simulasi Spektrofotometer UV-Vis":
