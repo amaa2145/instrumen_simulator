@@ -18,20 +18,28 @@ Kamu dapat:
 """)
 
 # ------------------ MENU -------------------
-menu = st.sidebar.radio("📋 Pilih Simulasi", ["1. Input Spektrum λ maks", "2. Input Kurva Kalibrasi", "3. Hitung Konsentrasi Sampel"])
-menu = st.sidebar.radio("📋 Pilih Simulasi", [
-    "1. Input Spektrum λ maks", 
-    "2. Input Kurva Kalibrasi", 
-    "3. Hitung Konsentrasi Sampel",
-    "4. Simulasi Instrumen GC"  # ← Tambahan ini
-])
 menu = st.sidebar.radio("📋 Pilih Simulasi", [
     "1. Input Spektrum λ maks", 
     "2. Input Kurva Kalibrasi", 
     "3. Hitung Konsentrasi Sampel",
     "4. Simulasi Instrumen GC",
-    "5. Simulasi Spektroskopi FTIR"  # ← Tambahan ini
+    "5. Simulasi Spektroskopi FTIR"
 ])
+
+if menu == "1. Input Spektrum λ maks":
+    # kode untuk UV-Vis λ maks
+
+elif menu == "2. Input Kurva Kalibrasi":
+    # kode kurva kalibrasi
+
+elif menu == "3. Hitung Konsentrasi Sampel":
+    # kode hitung sampel
+
+elif menu == "4. Simulasi Instrumen GC":
+    # kode GC
+
+elif menu == "5. Simulasi Spektroskopi FTIR":
+    # kode FTIR
 
 # ------------------ 1. SPEKTRUM λ MAKS -------------------
 if menu == "1. Input Spektrum λ maks":
