@@ -137,14 +137,14 @@ st.info(f"🧪 Suhu Kolom: {suhu_kolom}°C | Kolom: {jenis_kolom} | Alir: {laju_
 
 st.markdown("Masukkan data waktu retensi dan tinggi puncak untuk setiap senyawa:")
 
-    example_gc_data = {
-        "Waktu Retensi (menit)": [1.2, 2.5, 3.7, 5.0],
-        "Tinggi Puncak": [10, 25, 18, 12],
-        "Lebar Puncak (menit)": [0.2, 0.3, 0.25, 0.2]
-    }
+example_gc_data = {
+    "Waktu Retensi (menit)": [1.2, 2.5, 3.7, 5.0],
+    "Tinggi Puncak": [10, 25, 18, 12],
+    "Lebar Puncak (menit)": [0.2, 0.3, 0.25, 0.2]
+}
 
-    df_gc = pd.DataFrame(example_gc_data)
-    edited_gc = st.data_editor(df_gc, use_container_width=True, num_rows="dynamic")
+df_gc = pd.DataFrame(example_gc_data)
+edited_gc = st.data_editor(df_gc, use_container_width=True, num_rows="dynamic")
 
     # Hitung luas tiap puncak (asumsi: segitiga → luas = 0.5 × tinggi × lebar)
     edited_gc["Luas Puncak"] = 0.5 * edited_gc["Tinggi Puncak"] * edited_gc["Lebar Puncak (menit)"]
