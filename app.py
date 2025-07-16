@@ -33,8 +33,6 @@ elif simulasi == "GC":
 elif simulasi == "FTIR":
     # tampilkan kode untuk FTIR
 
-
-
 # ------------------ Halaman 1 -------------------
 if menu == "1. Simulasi Spektrofotometer UV-Vis":
     st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
