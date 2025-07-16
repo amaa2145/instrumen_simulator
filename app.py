@@ -17,7 +17,8 @@ menu = st.sidebar.radio("📋 Pilih Simulasi", [
 ])
 
 # ------------------ Halaman 1 -------------------
-elif menu == "1. Input Spektrum λ maks":
+if menu == "1. Input Spektrum λ maks":
+
     st.subheader("1. Input Spektrum UV-Vis (λ vs Absorbansi)")
 
     contoh_data = "200,0.01\n250,0.18\n300,0.45\n350,0.60\n400,0.40\n450,0.25"
