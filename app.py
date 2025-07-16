@@ -9,13 +9,33 @@ st.set_page_config(page_title="Simulasi Instrumen Kimia", layout="centered")
 
 st.title("🧪 Aplikasi Simulasi Instrumen Kimia")
 
-menu = st.sidebar.radio("📋 Pilih Simulasi", [
-    "1. Input Spektrum λ maks", 
-    "2. Input Kurva Kalibrasi", 
-    "3. Hitung Konsentrasi Sampel",
-    "4. Simulasi Instrumen GC",
-    "5. Simulasi Spektroskopi FTIR"
+menu = st.sidebar.radio("📋 Navigasi", [
+    "🏠 Beranda",
+    "1. Simulasi Spektrofotometer UV-Vis",
+    "2. Simulasi Instrumen GC",
+    "3. Simulasi Spektroskopi FTIR"
 ])
+
+if menu == "🏠 Beranda":
+    st.image("assets/instrumen_beranda.png", use_column_width=True, caption="Ilustrasi Instrumen Kimia", clamp=True)
+
+    st.markdown("""
+    # 🧪 Selamat Datang di Aplikasi Simulasi Instrumen Kimia
+
+    Aplikasi ini dirancang untuk membantu mahasiswa memahami cara kerja instrumen laboratorium kimia secara interaktif, meliputi:
+
+    - 📊 **Spektrofotometer UV-Vis**  
+    - 🧬 **Gas Chromatography (GC)**  
+    - 🌈 **Spektroskopi FTIR**
+
+    Kamu dapat memasukkan data sendiri atau menggunakan data contoh untuk melihat:
+    - Spektrum
+    - Kurva kalibrasi
+    - Perhitungan konsentrasi
+
+    """, unsafe_allow_html=True)
+
+    st.info("🔍 Pilih menu di sidebar untuk memulai simulasi!")
 
 # ------------------ Halaman 1 -------------------
 if menu == "1. Input Spektrum λ maks":
