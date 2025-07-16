@@ -73,6 +73,74 @@ if simulasi == "UV-Vis":
         ax.set_title("Spektrum UV-Vis")
         ax.legend()
         st.pyplot(fig)
+        
+    st.subheader("2. Simulasi Kurva Kalibrasi")
+
+    st.markdown("Masukkan data standar (konsentrasi dan absorbansi):")
+
+    default_data = {
+        "Konsentrasi (ppm)": [0, 5, 10, 15, 20, 25],
+        "Absorbansi": [0.02, 0.13, 0.27, 0.40, 0.52, 0.64]
+    }
+
+    df = pd.DataFrame(default_data)
+    edited_df = st.data_editor(df, use_container_width=True)
+
+    X = np.array(edited_df["Konsentrasi (ppm)"]).reshape(-1, 1)
+    y = np.array(edited_df["Absorbansi"])
+
+    model = LinearRegression()
+    model.fit(X, y)
+
+    slope = model.coef_[0]
+    intercept = model.intercept_
+    r2 = model.score(X, y)
+
+    st.markdown(f"""
+    **Persamaan regresi:**  
+    Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}  
+    Koefisien determinasi (R²) = {r2:.4f}
+    """)
+
+    fig, ax = plt.subplots()
+    ax.scatter(X, y, color='blue', label='Data Standar')
+    ax.plot(X, model.predict(X), color='green', label='Regresi Linear')
+    ax.set_xlabel("Konsentrasi (ppm)")
+    ax.set_ylabel("Absorbansi")
+    ax.legend()
+    st.pyplot(fig)
+
+    st.subheader("3. Hitung Konsentrasi Sampel dari Absorbansi")
+
+    st.markdown("Masukkan data berikut berdasarkan hasil kurva kalibrasi:")
+
+    absorbansi_sampel = st.number_input(
+        "Nilai absorbansi sampel:", 
+        min_value=0.0, 
+        step=0.01, 
+        format="%.2f"
+    )
+
+    slope_input = st.number_input(
+        "Nilai slope (kemiringan) dari kurva kalibrasi:", 
+        value=0.025, 
+        step=0.001, 
+        format="%.4f"
+    )
+
+    intercept_input = st.number_input(
+        "Nilai intercept (titik potong) dari kurva kalibrasi:", 
+        value=0.01, 
+        step=0.001, 
+        format="%.4f"
+    )
+
+    if st.button("Hitung Konsentrasi"):
+        try:
+            konsentrasi = (absorbansi_sampel - intercept_input) / slope_input
+            st.success(f"Perkiraan konsentrasi sampel: **{konsentrasi:.2f} ppm**")
+        except ZeroDivisionError:
+            st.error("Slope tidak boleh nol.")
 
 # ------------------ Halaman 2: GC -------------------
 elif simulasi == "GC":
