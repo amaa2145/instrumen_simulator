@@ -25,6 +25,13 @@ menu = st.sidebar.radio("📋 Pilih Simulasi", [
     "3. Hitung Konsentrasi Sampel",
     "4. Simulasi Instrumen GC"  # ← Tambahan ini
 ])
+menu = st.sidebar.radio("📋 Pilih Simulasi", [
+    "1. Input Spektrum λ maks", 
+    "2. Input Kurva Kalibrasi", 
+    "3. Hitung Konsentrasi Sampel",
+    "4. Simulasi Instrumen GC",
+    "5. Simulasi Spektroskopi FTIR"  # ← Tambahan ini
+])
 
 # ------------------ 1. SPEKTRUM λ MAKS -------------------
 if menu == "1. Input Spektrum λ maks":
@@ -173,3 +180,51 @@ ax.set_ylabel("Tinggi Puncak")
 ax.set_title("Kromatogram Gas Chromatography (GC)")
 ax.legend()
 st.pyplot(fig)
+#--------------------5. Simulasi FTIR ------------------
+elif menu == "5. Simulasi Spektroskopi FTIR":
+    st.subheader("5. Simulasi Spektrum FTIR")
+
+    st.markdown("Masukkan data FTIR kamu (dalam format: bilangan gelombang [cm⁻¹] dan intensitas):")
+    
+    contoh_data = "4000,0.01\n3500,0.10\n3000,0.30\n2850,0.25\n1750,0.50\n1600,0.42\n1200,0.20\n800,0.15"
+    data_input = st.text_area("Input data (wavenumber, absorbansi)", contoh_data, height=200)
+
+    if data_input:
+        try:
+            import io
+            df_ftir = pd.read_csv(io.StringIO(data_input), header=None, names=["Wavenumber (cm⁻¹)", "Absorbansi"])
+            df_ftir.sort_values(by="Wavenumber (cm⁻¹)", ascending=False, inplace=True)  # urut dari tinggi ke rendah
+
+            st.markdown("### Spektrum FTIR")
+            fig, ax = plt.subplots()
+            ax.plot(df_ftir["Wavenumber (cm⁻¹)"], df_ftir["Absorbansi"], color='black')
+            ax.set_xlabel("Bilangan Gelombang (cm⁻¹)")
+            ax.set_ylabel("Absorbansi")
+            ax.set_title("Spektrum FTIR")
+            ax.invert_xaxis()  # khas FTIR
+            st.pyplot(fig)
+
+            # Pengenalan gugus fungsi berdasarkan bilangan gelombang
+            st.markdown("### Identifikasi Gugus Fungsi")
+
+            def identifikasi_gugus(wave):
+                if 3700 >= wave >= 3200:
+                    return "O-H / N-H (stretching)"
+                elif 3100 >= wave >= 2800:
+                    return "C-H (alkana, aromatik)"
+                elif 1800 >= wave >= 1600:
+                    return "C=O (karbonil)"
+                elif 1600 >= wave >= 1400:
+                    return "C=C (aromatik)"
+                elif 1300 >= wave >= 1000:
+                    return "C-O (alkohol, ester)"
+                elif 900 >= wave >= 600:
+                    return "C-H bending / fingerprint"
+                else:
+                    return "-"
+
+            df_ftir["Gugus Fungsi"] = df_ftir["Wavenumber (cm⁻¹)"].apply(identifikasi_gugus)
+            st.dataframe(df_ftir)
+
+        except Exception as e:
+            st.error(f"Gagal membaca data: {e}")
