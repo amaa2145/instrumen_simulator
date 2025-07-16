@@ -17,7 +17,7 @@ menu = st.sidebar.radio("📋 Navigasi", [
 ])
 
 if menu == "🏠 Beranda":
-    st.image("assets/spektrofotometer_uvvis_double_beam.webp", caption="Ilustrasi Instrumen UV-Vis")
+    st.image("assets/spektro.jpg","ftir.jpg","GC.png", caption="Ilustrasi Instrumen Laboratorium")
 
 
     st.markdown("""
