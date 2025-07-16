@@ -17,7 +17,8 @@ menu = st.sidebar.radio("📋 Navigasi", [
 ])
 
 if menu == "🏠 Beranda":
-    st.image("assets/instrumen_beranda.png", use_column_width=True, caption="Ilustrasi Instrumen Kimia", clamp=True)
+    st.image("assets/spektrofotometer_uvvis_double_beam.webp", caption="Ilustrasi Instrumen UV-Vis")
+
 
     st.markdown("""
     # 🧪 Selamat Datang di Aplikasi Simulasi Instrumen Kimia
