@@ -27,22 +27,26 @@ simulasi = st.selectbox("🔍 Pilih Simulasi:", [
 
 # ------------------ Halaman 1: UV-Vis -------------------
 if simulasi == "UV-Vis":
-    st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
-    st.markdown("Masukkan data panjang gelombang dan absorbansi:")
+   st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
+st.markdown("Masukkan data panjang gelombang dan absorbansi:")
 
-    contoh_data = "200,0.01\n250,0.18\n300,0.45\n350,0.60\n400,0.40\n450,0.25"
-    input_uvvis = st.text_area("Atau masukkan data manual (λ [nm], Absorbansi)", contoh_data, height=150)
-    uploaded_file = st.file_uploader("Atau unggah file CSV untuk spektrum", type=["csv"], key="file_spektrum")
+contoh_data = "200,0.01\n250,0.18\n300,0.45\n350,0.60\n400,0.40\n450,0.25"
+input_uvvis = st.text_area("Masukkan data manual (λ [nm], Absorbansi)", contoh_data, height=150)
 
-    df_uv = None
-    if uploaded_file is not None:
-        try:
-            df_uv = pd.read_csv(uploaded_file)
-            if df_uv.shape[1] != 2:
-                st.warning("File harus memiliki 2 kolom: panjang gelombang dan absorbansi")
-                df_uv = None
-        except Exception as e:
-            st.error(f"Format file salah: {e}")
+df_uv = None
+if input_uvvis:
+    try:
+        lines = input_uvvis.strip().split('\n')
+        data = [tuple(map(float, line.split(','))) for line in lines]
+        df_uv = pd.DataFrame(data, columns=["Panjang Gelombang (nm)", "Absorbansi"])
+        st.success("Data berhasil dimuat!")
+        st.dataframe(df_uv)
+        
+        # Plot spektrum UV-Vis
+        st.line_chart(df_uv.rename(columns={"Panjang Gelombang (nm)": "index"}).set_index("index"))
+
+    except Exception as e:
+        st.error(f"Gagal membaca data teks: {e}")
     elif input_uvvis:
         try:
             lines = input_uvvis.strip().split('\n')
