@@ -1,1 +1,9 @@
+# (Opsional, tambahkan file ini agar tampilan berwarna mode otomatis)
 
+# [theme]
+# base="rainbow"
+# primaryColor="#00c3ff"
+# backgroundColor="#0e1117"
+# secondaryBackgroundColor="#262730"
+# textColor="#ffffff"
+# font="sans serif"
