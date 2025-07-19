@@ -16,7 +16,7 @@ Aplikasi ini dirancang untuk mensimulasikan penggunaan berbagai **instrumen kimi
 - 📊 **Spektrofotometer UV-Vis**
 - 🧬 **Gas Chromatography (GC)**
 - 🌈 **Spektroskopi FTIR**
-
+""")
 st.markdown("### Pilih salah satu simulasi di bawah ini untuk memulai:")
 
 col1, col2, col3 = st.columns(3)
