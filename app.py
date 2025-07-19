@@ -39,7 +39,7 @@ st.markdown("""
 1. Tentukan panjang gelombang maksimum
 2. Buat kurva kalibrasi dari data standar
 3. Hitung konsentrasi sampel
-""")
+""") 
 
 st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
 st.markdown("Masukkan data panjang gelombang dan absorbansi:")
