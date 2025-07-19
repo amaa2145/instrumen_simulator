@@ -111,10 +111,11 @@ if input_uvvis:
     intercept = model.intercept_
     r2 = model.score(X, y)
 
-  st.markdown(f"""
+ st.markdown(f"""
 **Persamaan regresi:**  
 Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}
 """)
+
 
 st.markdown(f"Koefisien determinasi (R<sup>2</sup>) = {r2:.4f}", unsafe_allow_html=True)
 
