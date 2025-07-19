@@ -20,14 +20,21 @@ Aplikasi ini dirancang untuk mensimulasikan penggunaan berbagai **instrumen kimi
 Pilih salah satu simulasi di bawah ini untuk memulai:
 """)
 
-simulasi = st.selectbox("🔍 Pilih Simulasi:", [
-    "-- Pilih Simulasi --",
-    "UV-Vis", "GC", "FTIR"
-])
 
-# ------------------ Halaman 1: UV-Vis -------------------
-if simulasi == "UV-Vis":
-   st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
+# ------------------ Halaman 1: UV-Vis -------------------#
+st.set_page_config(page_title="Simulasi Spektrofotometer UV-Vis")
+st.title("🔬 Simulasi Spektrofotometer UV-Vis")
+
+st.markdown("""
+### Panduan:
+1. Tentukan panjang gelombang maksimum
+2. Buat kurva kalibrasi dari data standar
+3. Hitung konsentrasi sampel
+""")
+
+if st.button("⬅ Kembali ke Beranda"):
+    switch_page("app")
+st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
 st.markdown("Masukkan data panjang gelombang dan absorbansi:")
 
 contoh_data = "200,0.01\n250,0.18\n300,0.45\n350,0.60\n400,0.40\n450,0.25"
@@ -41,28 +48,20 @@ if input_uvvis:
         df_uv = pd.DataFrame(data, columns=["Panjang Gelombang (nm)", "Absorbansi"])
         st.success("Data berhasil dimuat!")
         st.dataframe(df_uv)
-        
-        # Plot spektrum UV-Vis
+
+        # Plot spektrum UV-Vis sederhana
         st.line_chart(df_uv.rename(columns={"Panjang Gelombang (nm)": "index"}).set_index("index"))
 
-    except Exception as e:
-        st.error(f"Gagal membaca data teks: {e}")
-    elif input_uvvis:
-        try:
-            lines = input_uvvis.strip().split('\n')
-            data = [tuple(map(float, line.split(','))) for line in lines]
-            df_uv = pd.DataFrame(data, columns=["Panjang Gelombang (nm)", "Absorbansi"])
-        except Exception as e:
-            st.error(f"Gagal membaca data teks: {e}")
-
-    if df_uv is not None:
+        # Deteksi lambda maks
         idx_max = df_uv["Absorbansi"].idxmax()
         lambda_max = df_uv.loc[idx_max, "Panjang Gelombang (nm)"]
         st.success(f"λ maks terdeteksi pada: **{lambda_max} nm**")
 
+        # Opsi tampilan
         warna_garis = st.color_picker("Pilih warna garis spektrum", "#000000")
         overlay = st.checkbox("Tampilkan spektrum referensi? (simulasi)")
 
+        # Plot lanjutan dengan Matplotlib
         fig, ax = plt.subplots()
         ax.plot(df_uv["Panjang Gelombang (nm)"], df_uv["Absorbansi"], color=warna_garis, label='Spektrum Sampel')
         ax.axvline(lambda_max, color='red', linestyle='--', label=f'λ maks = {lambda_max} nm')
@@ -77,6 +76,10 @@ if input_uvvis:
         ax.set_title("Spektrum UV-Vis")
         ax.legend()
         st.pyplot(fig)
+
+    except Exception as e:
+        st.error(f"Gagal membaca data teks: {e}")
+
         
     st.subheader("2. Simulasi Kurva Kalibrasi")
 
