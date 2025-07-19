@@ -24,6 +24,14 @@ simulasi = st.selectbox("🔍 Pilih Simulasi:", [
     "-- Pilih Simulasi --",
     "UV-Vis", "GC", "FTIR"
 ])
+if st.button("🔬 Buka Simulasi UV-Vis"):
+    switch_page("1_spektrofotometer_uvvis")
+
+if st.button("🧪 Buka Simulasi GC"):
+    switch_page("2_gc")
+
+if st.button("📉 Buka Simulasi FTIR"):
+    switch_page("3_ftir")
 
 # ------------------ Halaman 1: UV-Vis -------------------
 if simulasi == "UV-Vis":
