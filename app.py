@@ -113,7 +113,7 @@ if input_uvvis:
 
     st.markdown(f"""
     **Persamaan regresi:**  
-    Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}  
+    f"Absorbansi = {slope:.4f} * Konsentrasi + {intercept:.4f}"
     Koefisien determinasi (R²) = {r2:.4f}
     """)
 
