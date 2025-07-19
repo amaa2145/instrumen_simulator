@@ -32,6 +32,7 @@ with col3:
 
 
 # ------------------ Halaman 1: UV-Vis -------------------#
+# ------------------ Halaman 1: UV-Vis -------------------#
 st.set_page_config(page_title="Simulasi Spektrofotometer UV-Vis")
 st.title("🔬 Simulasi Spektrofotometer UV-Vis")
 
@@ -85,81 +86,79 @@ if input_uvvis:
         ax.legend()
         st.pyplot(fig)
 
+        # ---------------- Bagian Kalibrasi ---------------- #
+        st.subheader("2. Simulasi Kurva Kalibrasi")
+        st.markdown("Masukkan data standar (konsentrasi dan absorbansi):")
+
+        default_data = {
+            "Konsentrasi (ppm)": [0, 5, 10, 15, 20, 25],
+            "Absorbansi": [0.02, 0.13, 0.27, 0.40, 0.52, 0.64]
+        }
+
+        df = pd.DataFrame(default_data)
+        edited_df = st.data_editor(df, use_container_width=True)
+
+        X = np.array(edited_df["Konsentrasi (ppm)"]).reshape(-1, 1)
+        y = np.array(edited_df["Absorbansi"])
+
+        model = LinearRegression()
+        model.fit(X, y)
+
+        slope = model.coef_[0]
+        intercept = model.intercept_
+        r2 = model.score(X, y)
+
+        # Tampilkan hasil regresi
+        st.markdown(f"""
+        **Persamaan regresi:**  
+        Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}
+        """)
+
+        st.markdown(f"Koefisien determinasi (R<sup>2</sup>) = {r2:.4f}", unsafe_allow_html=True)
+
+        # Plot regresi
+        fig, ax = plt.subplots()
+        ax.scatter(X, y, color='blue', label='Data Standar')
+        ax.plot(X, model.predict(X), color='green', label='Regresi Linear')
+        ax.set_xlabel("Konsentrasi (ppm)")
+        ax.set_ylabel("Absorbansi")
+        ax.legend()
+        st.pyplot(fig)
+
+        # ---------------- Hitung Konsentrasi ---------------- #
+        st.subheader("3. Hitung Konsentrasi Sampel dari Absorbansi")
+        st.markdown("Masukkan data berikut berdasarkan hasil kurva kalibrasi:")
+
+        absorbansi_sampel = st.number_input(
+            "Nilai absorbansi sampel:", 
+            min_value=0.0, 
+            step=0.01, 
+            format="%.2f"
+        )
+
+        slope_input = st.number_input(
+            "Nilai slope (kemiringan) dari kurva kalibrasi:", 
+            value=round(slope, 4), 
+            step=0.001, 
+            format="%.4f"
+        )
+
+        intercept_input = st.number_input(
+            "Nilai intercept (titik potong) dari kurva kalibrasi:", 
+            value=round(intercept, 4), 
+            step=0.001, 
+            format="%.4f"
+        )
+
+        if st.button("Hitung Konsentrasi"):
+            try:
+                konsentrasi = (absorbansi_sampel - intercept_input) / slope_input
+                st.success(f"Perkiraan konsentrasi sampel: **{konsentrasi:.2f} ppm**")
+            except ZeroDivisionError:
+                st.error("Slope tidak boleh nol.")
+
     except Exception as e:
         st.error(f"Gagal membaca data teks: {e}")
-
-        
-    st.subheader("2. Simulasi Kurva Kalibrasi")
-
-    st.markdown("Masukkan data standar (konsentrasi dan absorbansi):")
-
-    default_data = {
-        "Konsentrasi (ppm)": [0, 5, 10, 15, 20, 25],
-        "Absorbansi": [0.02, 0.13, 0.27, 0.40, 0.52, 0.64]
-    }
-
-    df = pd.DataFrame(default_data)
-    edited_df = st.data_editor(df, use_container_width=True)
-
-    X = np.array(edited_df["Konsentrasi (ppm)"]).reshape(-1, 1)
-    y = np.array(edited_df["Absorbansi"])
-
-    model = LinearRegression()
-    model.fit(X, y)
-
-    slope = model.coef_[0]
-    intercept = model.intercept_
-    r2 = model.score(X, y)
-    
-st.markdown(f"""
-**Persamaan regresi:**  
-Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}
-""")
-
-st.markdown(f"Koefisien determinasi (R<sup>2</sup>) = {r2:.4f}", unsafe_allow_html=True)
-
-
-st.markdown(f"Koefisien determinasi (R<sup>2</sup>) = {r2:.4f}", unsafe_allow_html=True)
-
-    fig, ax = plt.subplots()
-    ax.scatter(X, y, color='blue', label='Data Standar')
-    ax.plot(X, model.predict(X), color='green', label='Regresi Linear')
-    ax.set_xlabel("Konsentrasi (ppm)")
-    ax.set_ylabel("Absorbansi")
-    ax.legend()
-    st.pyplot(fig)
-
-    st.subheader("3. Hitung Konsentrasi Sampel dari Absorbansi")
-
-    st.markdown("Masukkan data berikut berdasarkan hasil kurva kalibrasi:")
-
-    absorbansi_sampel = st.number_input(
-        "Nilai absorbansi sampel:", 
-        min_value=0.0, 
-        step=0.01, 
-        format="%.2f"
-    )
-
-    slope_input = st.number_input(
-        "Nilai slope (kemiringan) dari kurva kalibrasi:", 
-        value=0.025, 
-        step=0.001, 
-        format="%.4f"
-    )
-
-    intercept_input = st.number_input(
-        "Nilai intercept (titik potong) dari kurva kalibrasi:", 
-        value=0.01, 
-        step=0.001, 
-        format="%.4f"
-    )
-
-    if st.button("Hitung Konsentrasi"):
-        try:
-            konsentrasi = (absorbansi_sampel - intercept_input) / slope_input
-            st.success(f"Perkiraan konsentrasi sampel: **{konsentrasi:.2f} ppm**")
-        except ZeroDivisionError:
-            st.error("Slope tidak boleh nol.")
 
 # ------------------ Halaman 2: GC -------------------
 elif simulasi == "GC":
