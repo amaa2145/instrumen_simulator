@@ -17,8 +17,18 @@ Aplikasi ini dirancang untuk mensimulasikan penggunaan berbagai **instrumen kimi
 - 🧬 **Gas Chromatography (GC)**
 - 🌈 **Spektroskopi FTIR**
 
-Pilih salah satu simulasi di bawah ini untuk memulai:
-""")
+st.markdown("### Pilih salah satu simulasi di bawah ini untuk memulai:")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("🔬 Spektrofotometer UV-Vis"):
+        switch_page("spektrofotometer_uvvis")
+with col2:
+    if st.button("💨 Gas Chromatography (GC)"):
+        switch_page("simulasi_gc")
+with col3:
+    if st.button("🌈 Spektroskopi FTIR"):
+        switch_page("simulasi_ftir")
 
 
 # ------------------ Halaman 1: UV-Vis -------------------#
@@ -32,8 +42,6 @@ st.markdown("""
 3. Hitung konsentrasi sampel
 """)
 
-if st.button("⬅ Kembali ke Beranda"):
-    switch_page("app")
 st.subheader("🔬 1. Simulasi Spektrum UV-Vis (λ Maksimal)")
 st.markdown("Masukkan data panjang gelombang dan absorbansi:")
 
