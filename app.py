@@ -107,11 +107,7 @@ if input_uvvis:
         r2 = model.score(X, y)
 
         # Tampilkan hasil regresi
-        st.markdown(f"""
-        **Persamaan regresi:**  
-        Absorbansi = {slope:.4f} x Konsentrasi + {intercept:.4f}
-        """)
-
+        st.markdown("**Persamaan regresi:**  \nAbsorbansi = {:.4f} × Konsentrasi + {:.4f}".format(slope, intercept))
         st.markdown(f"Koefisien determinasi (R<sup>2</sup>) = {r2:.4f}", unsafe_allow_html=True)
 
         # Plot regresi
