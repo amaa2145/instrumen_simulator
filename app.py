@@ -30,8 +30,6 @@ with col3:
     if st.button("🌈 Spektroskopi FTIR"):
         switch_page("simulasi_ftir")
 
-
-# ------------------ Halaman 1: UV-Vis -------------------#
 # ------------------ Halaman 1: UV-Vis -------------------#
 st.set_page_config(page_title="Simulasi Spektrofotometer UV-Vis")
 st.title("🔬 Simulasi Spektrofotometer UV-Vis")
@@ -111,7 +109,7 @@ if input_uvvis:
         # Tampilkan hasil regresi
         st.markdown(f"""
         **Persamaan regresi:**  
-        Absorbansi = {slope:.4f} × Konsentrasi + {intercept:.4f}
+        Absorbansi = {slope:.4f} x Konsentrasi + {intercept:.4f}
         """)
 
         st.markdown(f"Koefisien determinasi (R<sup>2</sup>) = {r2:.4f}", unsafe_allow_html=True)
